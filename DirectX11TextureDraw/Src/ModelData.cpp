@@ -3,13 +3,13 @@
 
 // 頂点バッファデータ
 CustomVertex g_VertexList01[] {
-    { { -0.2f,  0.2f, 0.2f }, { 1.0f, 0.0f, 0.0f, 1.0f } },
-    { {  0.2f, 0.2f, 0.2f }, { 0.0f, 1.0f, 0.0f, 1.0f } },
-    { { -0.2f, -0.2f, 0.2f }, { 0.0f, 0.0f, 1.0f, 1.0f } },
+	{ { -0.2f,  0.2f, 0.2f }, { 1.0f, 0.0f, 0.0f, 1.0f }, {0.0f, 0.0f } },
+	{ {  0.2f, 0.2f, 0.2f }, { 0.0f, 1.0f, 0.0f, 1.0f }, { 1.0f, 0.0f } },
+    { { -0.2f, -0.2f, 0.2f }, { 0.0f, 0.0f, 1.0f, 1.0f }, { 0.0f, 1.0f } },
 
-	{ { 0.2f,  0.2f, 0.2f }, { 1.0f, 0.0f, 0.0f, 1.0f } },
-	{ { 0.2f,  -0.2f, 0.2f }, { 1.0f, 0.0f, 0.0f, 1.0f } },
-	{ { -0.2f, -0.2f, 0.2f }, { 0.0f, 0.0f, 1.0f, 1.0f } },
+	{ { 0.2f,  0.2f, 0.2f }, { 1.0f, 0.0f, 0.0f, 1.0f }, { 1.0f, 0.0f } },
+	{ { 0.2f,  -0.2f, 0.2f }, { 1.0f, 0.0f, 0.0f, 1.0f }, { 1.0f, 1.0f } },
+	{ { -0.2f, -0.2f, 0.2f }, { 1.0f, 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f } },
 };
 
 /*
@@ -35,9 +35,7 @@ CustomVertex g_VertexList01[] {
 
 		UINT AlignedByteOffset
 			先頭からのoffset値
-			COLORはfloatのx,y,zの次の項目なのでfloat*3の位置になる
-			(D3D11_APPEND_ALIGNED_ELEMENTというマクロがあるが、
-			 中身が全ビットがonになっている状態で機能が不明のため、未使用)
+			D3D11_APPEND_ALIGNED_ELEMENTを指定したら自動的に必要な分のオフセット値が指定される
 
 		D3D11_INPUT_CLASSIFICATION InputSlotClass
 			この項目が頂点情報か否かを設定する
@@ -48,7 +46,8 @@ CustomVertex g_VertexList01[] {
 */
 D3D11_INPUT_ELEMENT_DESC g_VertexDesc[] {
     { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,    0,                 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-    { "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, sizeof(float) * 3, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    { "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "TEXCOORD",    0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 };
 
 bool ModelData::Create(Type model_type, ID3D11Device* device, VertexShader *vertex_shader)

@@ -7,6 +7,7 @@
 struct CustomVertex {
     float pos[ 3 ];		// 座標(x, y, z)
     float col[ 4 ];		// 色(r, g, b, a)
+	float tex_pos[2];	// テクスチャ座標
 };
 
 #endif
