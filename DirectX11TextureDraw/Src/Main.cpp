@@ -1,6 +1,6 @@
 ﻿#include <Windows.h>
 #include "Window.h"
-#include "DirectX.h"
+#include "DirectGraphics.h"
 #include "ModelData.h"
 #include <vector>
 
@@ -11,16 +11,19 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 {
 	Window window("DX11Practice", 1280, 720);
 
-	std::vector<int*> list;
-
 	// ウィンドウを作成
 	if (window.Create() == false)
 	{
 		return 0;
 	}
 
-	DirectX dx;
+	DirectGraphics dx;
 	if (dx.Init() == false)
+	{
+		return 0;
+	}
+
+	if (dx.LoadTexture(L"Res/Texture/Character.png") == false)
 	{
 		return 0;
 	}
@@ -53,7 +56,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		{
 			dx.StartRendering();
 
-			dx.RenderingPorigon(model);
+			dx.RenderingPorigon(model, L"Res/Texture/Character.png");
 
 			dx.FinishRendering();
 		}
@@ -63,4 +66,6 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	delete model;
 
 	dx.Release();
+
+	return 0;
 }
